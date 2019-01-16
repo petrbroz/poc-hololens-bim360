@@ -73,7 +73,9 @@ With everything setup, try the following:
 - the sidebar should now include a list of your AR/VR toolkit scenes, and potentially BIM 360 issues as well
 
 While the server is running, open the Unity project in _unity/BIM360\_HoloLens\_Demo_ and follow these steps:
-- go to _Mixed Reality Toolkit_ > _Configure_, and click _Apply Mixed Reality Project Settings_
+- go to _Mixed Reality Toolkit_ > _Configure_, click _Apply Mixed Reality Project Settings_, and apply the predefined options
+- go to _Mixed Reality Toolkit_ > _Configure_, click _Apply UWP Capability Settings_,
+and enable _Microphone_, _Webcam_, _Spatial Perception_, and _Internet Client_
 - go to _Edit_ > _Project Settings_ > _Player_, and in the _Other Settings_ section, make sure the _Scripting Runtime Version_
 is _.NET 4.x Equivalent_, and the _Scripting Backend_ is _IL2CPP_
 - go to _Mixed Reality Toolkit_ menu, and click _Build Window_
