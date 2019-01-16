@@ -1,0 +1,16 @@
+{
+  "name": "poc-hololens-bim360",
+  "version": "0.0.0",
+  "description": "Prototype application integrating BIM360 with HoloLens.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Petr Broz <petr.broz@autodesk.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "forge-apis": "^0.4.4",
+    "request": "^2.88.0"
+  }
+}

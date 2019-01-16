@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
+#sidebar {
+    position: absolute;
+    left: 0;
+    width: 25%;
+    height: 100%;
+    padding: 1em;
+    box-sizing: border-box;
+}
+
+#sidebar img.logo {
+    width: 150px;
+}
+
+#sidebar input[type=text], #sidebar select {
+    width: 100%;
+}
+
+#viewer {
+    position: absolute;
+    right: 0;
+    width: 75%;
+    height: 100%;
+}
