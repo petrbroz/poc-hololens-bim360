@@ -12,29 +12,33 @@
 </head>
 <body>
     <div id="sidebar">
-        <a href="/"><img src="/images/forge-logo.png" alt="Autodesk Forge" class="logo"></a>
-        <hr>
-        <a href="/api/auth/3-legged/login">Login</a>
-        <a href="/api/auth/3-legged/logout">Logout</a>
-        <div>2-legged:</div>
-        <input type="text" id="token-2legs"></input>
-        <div>3-legged:</div>
-        <input type="text" id="token-3legs"></input>
-        <hr>
-        <div>Models:</div>
-        <select id="models"></select>
-        <hr>
-        <div>Scenes:</div>
-        <ul id="scene-list"></ul>
-        <hr>
-        <div>Issues:</div>
-        <ul id="issue-list"></ul>
-        Title: <input type="text" id="issue-title"></input>
-        Description: <input type="text" id="issue-description"></input>
-        Status: <input type="text" id="issue-status"></input>
-        Types: <select id="issue-types"></select>
-        Subtypes: <select id="issue-subtypes"></select>
-        <button id="issue-create">Create Issue</button>
+        <div id="sidebar-header">
+            <a class="logo" href="/"><img src="/images/forge-logo.png" alt="Autodesk Forge"></a>
+            <button></button>
+        </div>
+        <div id="sidebar-controls">
+            <hr>
+            <h>Tokens</h>
+            <div>2-legged:</div>
+            <input type="text" id="token-2legs"></input>
+            <div>3-legged:</div>
+            <input type="text" id="token-3legs"></input>
+            <hr>
+            <h>Models</h>
+            <select id="models"></select>
+            <hr>
+            <h>Scenes</h>
+            <ul id="scene-list"></ul>
+            <hr>
+            <h>Issues</h>
+            <ul id="issue-list"></ul>
+            Title: <input type="text" id="issue-title"></input>
+            Description: <input type="text" id="issue-description"></input>
+            Status: <input type="text" id="issue-status"></input>
+            Types: <select id="issue-types"></select>
+            Subtypes: <select id="issue-subtypes"></select>
+            <button id="issue-create">Create Issue</button>
+        </div>
     </div>
     <div id="viewer"></div>
 </body>

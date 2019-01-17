@@ -8,17 +8,29 @@ const options = {
 
 let app = null;
 
-Autodesk.Viewing.Initializer(options, () => {
+Autodesk.Viewing.Initializer(options, async () => {
     app = new Autodesk.Viewing.ViewingApplication('viewer');
     app.registerViewer(app.k3D, Autodesk.Viewing.Private.GuiViewer3D);
-    fetch('/api/model')
-        .then(response => response.json())
-        .then(urns => {
-            const modelsSelect = document.getElementById('models');
-            modelsSelect.innerHTML = urns.map(urn => `<option value="${urn}">${urn}</option>`).join('');
-            modelsSelect.addEventListener('change', function(ev) { loadModel(modelsSelect.value); });
-            loadModel(modelsSelect.value);
-        });
+
+    // If the server already has a 3-legged token cached, show all the UI in the sidebar,
+    // otherwise prompt the user to sign in
+    const response = await fetch('/api/auth/3-legged/token');
+    if (response.status === 200) {
+        document.querySelector('#sidebar-header > button').innerHTML = 'Logout';
+        document.querySelector('#sidebar-header > button').addEventListener('click', function() { window.location.href = '/api/auth/3-legged/logout'; });
+        fetch('/api/model')
+            .then(response => response.json())
+            .then(urns => {
+                const modelsSelect = document.getElementById('models');
+                modelsSelect.innerHTML = urns.map(urn => `<option value="${urn}">${urn}</option>`).join('');
+                modelsSelect.addEventListener('change', function(ev) { loadModel(modelsSelect.value); });
+                loadModel(modelsSelect.value);
+            });
+    } else if (response.status === 404) {
+        document.querySelector('#sidebar-header > button').innerHTML = 'Login';
+        document.querySelector('#sidebar-header > button').addEventListener('click', function() { window.location.href = '/api/auth/3-legged/login'; });
+        document.getElementById('sidebar-controls').style.setProperty('display', 'none');
+    }
 });
 
 function loadModel(urn) {
