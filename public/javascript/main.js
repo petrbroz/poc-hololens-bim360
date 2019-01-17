@@ -59,10 +59,24 @@ function updateSidebarUI() {
         .then(credentials => document.getElementById('token-3legs').value = credentials.access_token);
     fetch('/api/scene')
         .then(resp => resp.status < 400 ? resp.json() : [])
-        .then(scenes => document.getElementById('scene-list').innerHTML = scenes.map(scene => `<li>${scene}</li>`).join(''));
+        .then(scenes => {
+            document.getElementById('scenes').innerHTML = scenes.map(scene => `<option value="${scene}">${scene}</option>`).join('');
+            function selectSceneGeometry() {
+                const scene = document.getElementById('scenes').value;
+                fetch('/api/scene/' + scene)
+                    .then(resp => resp.status < 400 ? resp.json() : { list: [] })
+                    .then(scene => {
+                        const viewer = app.getCurrentViewer();
+                        viewer.select(scene.list);
+                        viewer.fitToView(scene.list);
+                    });
+            }
+            document.getElementById('scenes').addEventListener('change', selectSceneGeometry);
+            selectSceneGeometry();
+        });
     fetch('/api/issue')
         .then(resp => resp.status < 400 ? resp.json() : [])
-        .then(issues => document.getElementById('issue-list').innerHTML = issues.map(issue => `<li>${issue.title}</li>`).join(''));
+        .then(issues => document.getElementById('issues').innerHTML = issues.map(issue => `<li>${issue.title}</li>`).join(''));
     fetch('/api/issue/types')
         .then(resp => resp.status < 400 ? resp.json() : [])
         .then(types => {
