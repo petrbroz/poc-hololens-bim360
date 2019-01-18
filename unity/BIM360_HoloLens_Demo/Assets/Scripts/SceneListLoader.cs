@@ -5,18 +5,26 @@ using UnityEngine;
 using UnityEngine.Networking;
 
 public class SceneListLoader : MonoBehaviour {
-    public string url; // Base URL for getting the list of all AR/VR toolkit scenes as well as individual scene info
-    public GameObject buttonPrefab; // Button prefab for each scene
-    public GameObject targetObject; // Game object to place scene geometry into
+    [Tooltip("Game object storing the application config.")]
+    public GameObject appConfig;
+    [Tooltip("Button prefab for each scene.")]
+    public GameObject buttonPrefab;
+    [Tooltip("Game object to place scene geometry into.")]
+    public GameObject sceneTarget;
+    [Tooltip("Game object to place issue pushpins into.")]
+    public GameObject issueTarget;
+
+    private ApplicationConfig _config;
 
     // Use this for initialization
     void Start () {
+        _config = appConfig.GetComponent<ApplicationConfig>();
         StartCoroutine(LoadScenes());
     }
 
     IEnumerator LoadScenes()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/scene", url)))
+        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/scene", _config.demoServerURL)))
         {
             yield return req.SendWebRequest();
             if (req.isNetworkError || req.isHttpError)
@@ -33,8 +41,8 @@ public class SceneListLoader : MonoBehaviour {
                     var textMesh = clone.GetComponentInChildren<TextMesh>();
                     textMesh.text = scene;
                     var selectHandler = clone.AddComponent<SceneSelectHandler>();
-                    selectHandler.url = url;
-                    selectHandler.target = targetObject;
+                    selectHandler.url = _config.demoServerURL;
+                    selectHandler.target = sceneTarget;
                     selectHandler.scene = scene;
                 }
                 GetComponent<ObjectCollection>().UpdateCollection();
