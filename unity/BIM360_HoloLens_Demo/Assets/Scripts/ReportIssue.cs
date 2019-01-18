@@ -1,4 +1,6 @@
 ﻿using HoloToolkit.Unity.Buttons;
+using HoloToolkit.UX.Dialog;
+using HoloToolkit.UX.Progress;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +14,10 @@ public class ReportIssue : MonoBehaviour {
     public GameObject issueTitleInput;
     [Tooltip("Input text for issue description.")]
     public GameObject issueDescriptionInput;
-    private int counter = 0;
+    [Tooltip("Error dialog prefab.")]
+    public GameObject dialogPrefab;
+    [Tooltip("Popup game object to hide after successfull issue submission.")]
+    public GameObject issuePopup;
 
     private ApplicationConfig _config;
 
@@ -23,6 +28,7 @@ public class ReportIssue : MonoBehaviour {
 
     private void OnButtonClicked(GameObject obj)
     {
+        ProgressIndicator.Instance.Open("Submitting issue...");
         StartCoroutine(SubmitIssue());
     }
 
@@ -40,11 +46,14 @@ public class ReportIssue : MonoBehaviour {
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.error);
+                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Error", req.error);
             }
             else
             {
-                // TODO
+                issuePopup.SetActive(false);
+                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Success", "The issue has been successfully submitted.");
             }
+            ProgressIndicator.Instance.Close();
         }
     }
 }

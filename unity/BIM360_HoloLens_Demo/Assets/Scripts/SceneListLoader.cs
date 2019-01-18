@@ -1,4 +1,6 @@
 ﻿using HoloToolkit.Unity.Collections;
+using HoloToolkit.UX.Dialog;
+using HoloToolkit.UX.Progress;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,12 +15,15 @@ public class SceneListLoader : MonoBehaviour {
     public GameObject sceneTarget;
     [Tooltip("Game object to place issue pushpins into.")]
     public GameObject issueTarget;
+    [Tooltip("Error dialog prefab.")]
+    public GameObject dialogPrefab;
 
     private ApplicationConfig _config;
 
-    // Use this for initialization
     void Start () {
         _config = appConfig.GetComponent<ApplicationConfig>();
+        
+        ProgressIndicator.Instance.Open("Loading scenes...");
         StartCoroutine(LoadScenes());
     }
 
@@ -29,10 +34,13 @@ public class SceneListLoader : MonoBehaviour {
             yield return req.SendWebRequest();
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.LogError(req.error);
+                Debug.LogError(req.downloadHandler.text);
+                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Scenes List Loading Error", req.downloadHandler.text);
             }
             else
             {
+                ProgressIndicator.Instance.SetMessage("Parsing scenes...");
+
                 string json = "{ \"scenes\": " + req.downloadHandler.text + " }";
                 SceneResult result = JsonUtility.FromJson<SceneResult>(json);
                 foreach (var scene in result.scenes)
@@ -44,9 +52,12 @@ public class SceneListLoader : MonoBehaviour {
                     selectHandler.url = _config.demoServerURL;
                     selectHandler.target = sceneTarget;
                     selectHandler.scene = scene;
+                    selectHandler.dialogPrefab = dialogPrefab;
                 }
                 GetComponent<ObjectCollection>().UpdateCollection();
+
             }
+            ProgressIndicator.Instance.Close();
         }
     }
 
