@@ -62,9 +62,9 @@ If you're using Visual Studio Code, here's an example configuration you can use 
 
 #### Client Side
 
-The Unity application requires one small change as well. In the _Hierarchy_ window, find and select
-a game object called _Scene List_. Then, find a component called _Scene List Loader_ in the _Inspector_
-window, and set its _Url_ parameter to a URL of the Node.js server that will be accessible
+The Unity application requires one small data entry as well. In the _Hierarchy_ window, find and select
+a game object called _Application Config_. Then, find a property called _Demo Server URL_
+in the _Inspector_ window, and set it to a URL of the demo Node.js server that will be accessible
 from the HoloLens device. For example, if the IP address of the machine where you're running the Node.js
 server is 192.168.0.123, set the parameter to _http://192.168.0.123:3000_.
 
