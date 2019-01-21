@@ -3,13 +3,14 @@ const express = require('express');
 const BIM360Client = require('../helpers/forge/bim360');
 
 const { FORGE_API_HOST, BIM360_CONTAINER_ID } = process.env;
+const MISSING_TOKEN_WARNING = `No 3-legged token cached in server. Make sure to go to the server URL and sign in first.`;
 
 let router = express.Router();
 
 router.use(function(req, res, next) {
     const credentials = req.app.get('FORGE_3LEGGED_TOKEN');
     if (!credentials) {
-        res.status(401).end();
+        res.status(401).send(MISSING_TOKEN_WARNING);
         return;
     }
     req.access_token = credentials.access_token;
