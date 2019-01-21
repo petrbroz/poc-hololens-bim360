@@ -28,8 +28,10 @@ The server requires several env. variables:
 - `FORGE_CLIENT_SECRET` - client secret of your Forge application
 - `FORGE_API_HOST` - base URL for all requests to Forge; use https://developer.api.autodesk.com
 - `REDIRECT_URL` - callback URL for the 3-legged auth workflow; use http://localhost:3000/api/auth/3-legged/callback when running locally
-- `BIM360_MODEL_URN` - URN of one of your models stored in BIM360 Docs
 - `BIM360_CONTAINER_ID` - BIM360 issues container ID
+- `BIM360_DOCUMENT_LINEAGE_ID` - ID of a specific BIM360 document (lineage) to be used for listing/creating issues
+- `BIM360_DOCUMENT_VERSION_URN` - URN of a specific BIM360 document (specific version) to be used for listing/creating issues
+- `BIM360_DOCUMENT_SHEET_GUID` - GUID of a specific sheet to be used for listing/creating issues
 - `TOOLKIT_API_HOST` - base URL for all requests to AR/VR toolkit; use https://developer-api-beta.autodesk.io
 
 If you're using Visual Studio Code, here's an example configuration you can use in _.vscode/launch.json_:
@@ -45,11 +47,13 @@ If you're using Visual Studio Code, here's an example configuration you can use 
             "env": {
                 "FORGE_CLIENT_ID": "<your client id>",
                 "FORGE_CLIENT_SECRET": "<your client secret>",
-                "FORGE_API_HOST": "https://developer.api.autodesk.com",
                 "REDIRECT_URL": "http://localhost:3000/api/auth/3-legged/callback",
-                "BIM360_MODEL_URN": "<your model urn>",
-                "BIM360_CONTAINER_ID": "<your container id>",
-                "TOOLKIT_API_HOST": "https://developer-api-beta.autodesk.io"
+                "FORGE_API_HOST": "https://developer.api.autodesk.com",
+                "TOOLKIT_API_HOST": "https://developer-api-beta.autodesk.io",
+                "BIM360_CONTAINER_ID": "<your BIM360 issue container id>",
+                "BIM360_DOCUMENT_LINEAGE_ID": "<your BIM360 document lineage ID, without base64-encoding>",
+                "BIM360_DOCUMENT_VERSION_URN": "<your BIM360 document version URN, base64-encoded>",
+                "BIM360_DOCUMENT_SHEET_GUID": "<your NIM360 document sheet guid"
             }
         }
     ]

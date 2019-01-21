@@ -1,7 +1,7 @@
 const express = require('express');
 
 // For now, we just use a single hard-coded model URN.
-const MODELS = [process.env.BIM360_MODEL_URN];
+const MODELS = [process.env.BIM360_DOCUMENT_VERSION_URN];
 
 let router = express.Router();
 

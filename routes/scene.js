@@ -2,7 +2,7 @@ const express = require('express');
 
 const ARVRClient = require('../helpers/forge/arvr');
 
-const { TOOLKIT_API_HOST, BIM360_MODEL_URN } = process.env;
+const { TOOLKIT_API_HOST, BIM360_DOCUMENT_VERSION_URN } = process.env;
 const MISSING_TOKEN_WARNING = `No 3-legged token cached in server. Make sure to go to the server URL and sign in first.`;
 
 let router = express.Router();
@@ -22,7 +22,7 @@ router.use(function(req, res, next) {
 router.get('/', async function(req, res, next) {
     const client = new ARVRClient(TOOLKIT_API_HOST, req.access_token);
     try {
-        const scenes = await client.getScenes(BIM360_MODEL_URN);
+        const scenes = await client.getScenes(BIM360_DOCUMENT_VERSION_URN);
         res.json(scenes);
     } catch(err) {
         next(err);
@@ -34,7 +34,7 @@ router.get('/', async function(req, res, next) {
 router.get('/:id', async function(req, res, next) {
     const client = new ARVRClient(TOOLKIT_API_HOST, req.access_token);
     try {
-        const scene = await client.getScene(BIM360_MODEL_URN, req.params.id);
+        const scene = await client.getScene(BIM360_DOCUMENT_VERSION_URN, req.params.id);
         scene.access_token = req.access_token;
         res.json(scene);
     } catch(err) {
