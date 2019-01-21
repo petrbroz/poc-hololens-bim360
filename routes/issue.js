@@ -35,7 +35,7 @@ router.get('/', async function(req, res, next) {
     const client = new BIM360Client(FORGE_API_HOST, req.access_token);
     try {
         const issues = await client.getIssues(BIM360_CONTAINER_ID);
-        res.json(issues.map(issue => {
+        res.json(issues.filter(issue => issue.attributes.status !== 'void').map(issue => {
             const { id, title, description, status, target_urn } = issue.attributes;
             let result = { id, title, description, status, target_urn };
             if (issue.attributes.pushpin_attributes) {

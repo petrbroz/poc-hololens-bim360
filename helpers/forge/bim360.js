@@ -85,7 +85,7 @@ class BIM360Client {
      */
     createIssue(containerId, title, description, status, issueType, issueSubtype, urn, sheet_guid, object_id, location) {
         const options = {
-            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues`,
+            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues?page[limit]=100`,
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${this.accessToken}`,
