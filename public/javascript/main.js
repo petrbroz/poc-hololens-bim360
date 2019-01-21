@@ -93,12 +93,16 @@ function updateSidebarUI() {
 
     // Add UI for making a request to the server to create new issue
     document.getElementById('issue-create').addEventListener('click', function() {
+        const viewer = app.getCurrentViewer();
+        const selection = viewer.getSelection();
         const issue = {
             title: document.getElementById('issue-title').value,
             description: document.getElementById('issue-description').value,
             status: document.getElementById('issue-status').value,
             issue_type: document.getElementById('issue-types').value,
-            issue_subtype: document.getElementById('issue-subtypes').value
+            issue_subtype: document.getElementById('issue-subtypes').value,
+            object_id: selection.length > 0 ? selection[0] : null,
+            x: 1.0, y: 2.0, z: 3.0
         };
         const options = {
             method: 'POST',

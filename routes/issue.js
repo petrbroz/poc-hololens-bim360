@@ -36,13 +36,15 @@ router.get('/', async function(req, res, next) {
     try {
         const issues = await client.getIssues(BIM360_CONTAINER_ID);
         res.json(issues.map(issue => {
-            return {
-                id: issue.id,
-                title: issue.attributes.title,
-                description: issue.attributes.description,
-                status: issue.attributes.status,
-                target_urn: issue.attributes.target_urn
-            };
+            const { id, title, description, status, target_urn } = issue.attributes;
+            let result = { id, title, description, status, target_urn };
+            if (issue.attributes.pushpin_attributes) {
+                const { type, location, object_id } = issue.attributes.pushpin_attributes;
+                result.pushpin_type = type;
+                result.pushpin_location = location;
+                result.pushpib_object_id = object_id;
+            }
+            return result;
         }));
     } catch(err) {
         next(err);
@@ -53,9 +55,14 @@ router.get('/', async function(req, res, next) {
 // Creates new BIM360 issue.
 router.post('/', async function(req, res, next) {
     const client = new BIM360Client(FORGE_API_HOST, req.access_token);
-    const { title, description, status, issue_type, issue_subtype } = req.body;
+    const { title, description, status, issue_type, issue_subtype, object_id, x, y, z } = req.body;
+    const urn = process.env.BIM360_DOCUMENT_LINEAGE_ID;
+    const sheet_guid = process.env.BIM360_DOCUMENT_SHEET_GUID;
     try {
-        const issue = await client.createIssue(BIM360_CONTAINER_ID, title, description, status, issue_type, issue_subtype);
+        const issue = await client.createIssue(
+            BIM360_CONTAINER_ID, title, description, status,
+            issue_type, issue_subtype, urn, sheet_guid, object_id, { x, y, z }
+        );
         res.json(issue);
     } catch(err) {
         next(err);
