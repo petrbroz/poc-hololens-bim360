@@ -592,14 +592,14 @@ PlayerSettings:
   apiCompatibilityLevelPerPlatform: {}
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: Template3D
+  metroPackageName: BIM360HoloLensDemo
   metroPackageVersion: 1.0.0.0
   metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: Autodesk
   metroCertificateIssuer: Autodesk
   metroCertificateNotAfter: 804fa825f5c7d501
-  metroApplicationDescription: Template_3D
+  metroApplicationDescription: BIM360 HoloLens Demo
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
