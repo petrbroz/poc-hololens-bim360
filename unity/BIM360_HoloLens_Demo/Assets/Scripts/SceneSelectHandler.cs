@@ -65,6 +65,25 @@ public class SceneSelectHandler : MonoBehaviour {
     private void OnProcessingNodesCompleted(int i)
     {
         ProgressIndicator.Instance.Close();
+
+        /*
+         * PETR's HACK:
+         *
+         * The AR/VR toolkit does not seem to support "global offset"
+         * that can be defined in the metadata of an SVF file.
+         * This information is important if we want to be able to map
+         * positions (e.g., of BIM360 issues) in Unity back to the original
+         * coord. system.
+         *
+         * In this prototype, we will assume a single document urn
+         * which is known to have the global offset (1.5, 48.6, -10.4).
+         */
+        foreach (Transform transform in target.transform)
+        {
+            transform.localPosition = new Vector3(1.5f, 48.6f, -10.4f);
+            transform.localEulerAngles = Vector3.zero;
+            transform.localScale = Vector3.one;
+        }
     }
 
     [System.Serializable]

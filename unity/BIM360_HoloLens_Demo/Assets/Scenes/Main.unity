@@ -440,6 +440,8 @@ MonoBehaviour:
   dialogPrefab: {fileID: 1302394645271036, guid: 675f0fa1333683640974b1e6c078079e,
     type: 2}
   issuePopup: {fileID: 1824108090}
+  targetTransform: {fileID: 1824108091}
+  sceneTransform: {fileID: 774024676}
 --- !u!1 &303616460
 GameObject:
   m_ObjectHideFlags: 0
@@ -696,7 +698,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 508888831}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -1, z: 5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 774024676}
@@ -871,13 +873,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 774024675}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: -0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 508888833}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1 &857821685
 GameObject:
   m_ObjectHideFlags: 0
@@ -1356,7 +1358,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4857426404074426, guid: ee519d5fb10a6db4f84d116e66f872b6, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1993071269674472, guid: ee519d5fb10a6db4f84d116e66f872b6, type: 2}
       propertyPath: m_Name
@@ -2295,15 +2297,15 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4371118409548410, guid: ca0b3667b91178c41963498bdc94e72e, type: 2}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4371118409548410, guid: ca0b3667b91178c41963498bdc94e72e, type: 2}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4371118409548410, guid: ca0b3667b91178c41963498bdc94e72e, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4371118409548410, guid: ca0b3667b91178c41963498bdc94e72e, type: 2}
       propertyPath: m_LocalRotation.w
@@ -2311,7 +2313,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4371118409548410, guid: ca0b3667b91178c41963498bdc94e72e, type: 2}
       propertyPath: m_RootOrder
-      value: 10
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1946075452665494, guid: ca0b3667b91178c41963498bdc94e72e, type: 2}
       propertyPath: m_IsActive
@@ -2344,32 +2346,32 @@ Prefab:
     - target: {fileID: 114277222886443626, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
       propertyPath: AnimActions.Array.data[0].InvalidParam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114277222886443626, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
       propertyPath: AnimActions.Array.data[1].InvalidParam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114277222886443626, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
       propertyPath: AnimActions.Array.data[2].InvalidParam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114277222886443626, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
       propertyPath: AnimActions.Array.data[3].InvalidParam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114277222886443626, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
       propertyPath: AnimActions.Array.data[4].InvalidParam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114277222886443626, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
       propertyPath: AnimActions.Array.data[5].InvalidParam
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114757493110393764, guid: ca0b3667b91178c41963498bdc94e72e,
         type: 2}
