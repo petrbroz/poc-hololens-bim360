@@ -22,10 +22,15 @@ public class SceneListLoader : MonoBehaviour {
 
     private ApplicationConfig _config;
 
-    void Start () {
+    void Start() {
+        ProgressIndicator.Instance.Open("Loading config...");
         _config = appConfig.GetComponent<ApplicationConfig>();
-        
-        ProgressIndicator.Instance.Open("Loading scenes...");
+        ApplicationConfig.OnConfigReady += OnConfigReady;
+    }
+
+    private void OnConfigReady()
+    {
+        ProgressIndicator.Instance.SetMessage("Loading scenes...");
         StartCoroutine(LoadScenes());
     }
 

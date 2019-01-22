@@ -68,6 +68,21 @@ in the _Inspector_ window, and set it to a URL of the demo Node.js server that w
 from the HoloLens device. For example, if the IP address of the machine where you're running the Node.js
 server is 192.168.0.123, set the parameter to _http://192.168.0.123:3000_.
 
+To avoid the hassle of rebuilding the Unity project just to change one of the config parameters,
+the application can now be configured using an external JSON file.
+With [Windows Device Portal](https://docs.microsoft.com/en-us/windows/mixed-reality/using-the-windows-device-portal)
+configured, simply go to the application's _LocalState_ folder (under _User Folders\\LocalAppData\\BIM360HoloLensDemo..._),
+and upload a file called _config.json_ with the following structure:
+
+```json
+{
+    "host": "<your url of the demo server>"
+}
+```
+
+When the HoloLens application starts, it'll check the existence of this file,
+and if it is available, the configuration in the JSON will override any defaults.
+
 ### Running
 
 With everything setup, try the following:
