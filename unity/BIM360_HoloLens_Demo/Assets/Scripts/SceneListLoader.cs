@@ -17,6 +17,8 @@ public class SceneListLoader : MonoBehaviour {
     public GameObject issueTarget;
     [Tooltip("Error dialog prefab.")]
     public GameObject dialogPrefab;
+    [Tooltip("Issue tooltip prefab.")]
+    public GameObject issuePrefab;
 
     private ApplicationConfig _config;
 
@@ -53,6 +55,8 @@ public class SceneListLoader : MonoBehaviour {
                     selectHandler.target = sceneTarget;
                     selectHandler.scene = scene;
                     selectHandler.dialogPrefab = dialogPrefab;
+                    selectHandler.issuesTarget = issueTarget;
+                    selectHandler.issuePrefab = issuePrefab;
                 }
                 GetComponent<ObjectCollection>().UpdateCollection();
 

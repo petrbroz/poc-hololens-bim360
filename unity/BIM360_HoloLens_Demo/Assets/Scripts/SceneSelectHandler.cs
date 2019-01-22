@@ -7,6 +7,8 @@ using Autodesk.Forge.ARKit;
 using HoloToolkit.Unity.UX;
 using HoloToolkit.UX.Progress;
 using HoloToolkit.UX.Dialog;
+using HoloToolkit.UX.ToolTips;
+using UnityEngine.UI;
 
 public class SceneSelectHandler : MonoBehaviour {
     [Tooltip("Demo server URL.")]
@@ -17,8 +19,12 @@ public class SceneSelectHandler : MonoBehaviour {
     public GameObject target;
     [Tooltip("Error dialog prefab.")]
     public GameObject dialogPrefab;
+    [Tooltip("Game object to be populated with issue pushpins.")]
+    public GameObject issuesTarget;
+    [Tooltip("Existing issue puship prefab.")]
+    public GameObject issuePrefab;
 
-	void Start () {
+    void Start () {
         CompoundButton button = this.GetComponent<CompoundButton>();
         button.OnButtonClicked += OnButtonClicked;
     }
@@ -27,6 +33,7 @@ public class SceneSelectHandler : MonoBehaviour {
     {
         ProgressIndicator.Instance.Open("Loading scene...");
         StartCoroutine(GetScene());
+        StartCoroutine(GetIssues());
     }
 
     IEnumerator GetScene()
@@ -103,6 +110,71 @@ public class SceneSelectHandler : MonoBehaviour {
         {
             public string urn;
             public string project_id;
+        }
+    }
+
+    IEnumerator GetIssues()
+    {
+        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/issue", url)))
+        {
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError)
+            {
+                Debug.LogError(req.error);
+            }
+            else
+            {
+                // Clear all previous issue pushpins
+                foreach (Transform transform in issuesTarget.transform)
+                {
+                    Destroy(transform.gameObject);
+                }
+
+                // Parse new pushpins and instantiate them in the scene
+                string json = req.downloadHandler.text;
+                Issues issues = Issues.CreateFromJSON(json);
+                foreach (var issue in issues.issues)
+                {
+                    GameObject clone = Instantiate(issuePrefab);
+                    clone.transform.parent = issuesTarget.transform;
+                    clone.transform.localPosition = new Vector3(issue.pushpin_location.x, issue.pushpin_location.y, issue.pushpin_location.z);
+                    clone.transform.localScale = new Vector3(5f, 5f, 5f);
+                    clone.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
+                    clone.GetComponentInChildren<Text>().text = issue.title;
+                    //Debug.Log("Issue: " + issue.title);
+                }
+            }
+        }
+    }
+
+    [System.Serializable]
+    public class Issues
+    {
+        [System.Serializable]
+        public class Issue
+        {
+            [System.Serializable]
+            public class PushpinLocation
+            {
+                public float x;
+                public float y;
+                public float z;
+            }
+
+            public string title;
+            public string description;
+            public string status;
+            public string pushpin_type;
+            public string pushpin_object_id;
+            public PushpinLocation pushpin_location;
+        }
+
+        public Issue[] issues;
+
+        public static Issues CreateFromJSON(string json)
+        {
+            return JsonUtility.FromJson<Issues>("{\"issues\":" + json + "}");
         }
     }
 }

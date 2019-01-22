@@ -647,6 +647,8 @@ MonoBehaviour:
   issueTarget: {fileID: 958083354}
   dialogPrefab: {fileID: 1302394645271036, guid: 675f0fa1333683640974b1e6c078079e,
     type: 2}
+  issuePrefab: {fileID: 1397420606166154, guid: 334455b2582630c4088a166fc13ab478,
+    type: 2}
 --- !u!1 &508888831
 GameObject:
   m_ObjectHideFlags: 0
@@ -1314,13 +1316,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 958083354}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: -0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 508888833}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1001 &1057549334
 Prefab:
   m_ObjectHideFlags: 0
