@@ -17,9 +17,9 @@ public class ApplicationConfig : MonoBehaviour {
         ParseConfiguration();
     }
 
+#if WINDOWS_UWP
     async void ParseConfiguration()
     {
-#if WINDOWS_UWP
         try
         {
             StorageFolder folder = ApplicationData.Current.LocalFolder;
@@ -38,10 +38,13 @@ public class ApplicationConfig : MonoBehaviour {
         {
             OnConfigReady?.Invoke();
         }
-#else
-        OnConfigReady?.Invoke();
-#endif
     }
+#else
+    void ParseConfiguration()
+    {
+        OnConfigReady?.Invoke();
+    }
+#endif
 
     [System.Serializable]
     public class Configuration
