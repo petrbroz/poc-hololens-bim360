@@ -42,7 +42,7 @@ public class SceneListLoader : MonoBehaviour {
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.downloadHandler.text);
-                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Scenes List Loading Error", req.downloadHandler.text);
+                Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Scenes List Loading Error", req.downloadHandler.text);
             }
             else
             {

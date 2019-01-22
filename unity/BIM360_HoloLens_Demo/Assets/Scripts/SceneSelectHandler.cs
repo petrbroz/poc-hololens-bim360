@@ -45,7 +45,7 @@ public class SceneSelectHandler : MonoBehaviour {
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.error);
-                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Scene Loading Error", req.error);
+                Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Scene Loading Error", req.error);
                 ProgressIndicator.Instance.Close();
             }
             else

@@ -61,12 +61,12 @@ public class ReportIssue : MonoBehaviour {
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.error);
-                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Error", req.error);
+                Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Error", req.error);
             }
             else
             {
                 issuePopup.SetActive(false);
-                Dialog dialog = Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Success", "The issue has been successfully submitted.");
+                Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Success", "The issue has been successfully submitted.");
             }
             ProgressIndicator.Instance.Close();
         }
