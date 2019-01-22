@@ -49,7 +49,7 @@ class BIM360Client {
      */
     getIssues(containerId) {
         const options = {
-            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues`,
+            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues?page[limit]=100`,
             headers: {
                 'Authorization': `Bearer ${this.accessToken}`,
                 'Content-Type': 'application/vnd.api+json'
@@ -85,7 +85,7 @@ class BIM360Client {
      */
     createIssue(containerId, title, description, status, issueType, issueSubtype, urn, sheet_guid, object_id, location) {
         const options = {
-            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues?page[limit]=100`,
+            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues`,
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${this.accessToken}`,

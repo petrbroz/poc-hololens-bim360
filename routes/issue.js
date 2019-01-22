@@ -42,7 +42,7 @@ router.get('/', async function(req, res, next) {
                 const { type, location, object_id } = issue.attributes.pushpin_attributes;
                 result.pushpin_type = type;
                 result.pushpin_location = location;
-                result.pushpib_object_id = object_id;
+                result.pushpin_object_id = object_id;
             }
             return result;
         }));
@@ -61,7 +61,8 @@ router.post('/', async function(req, res, next) {
     try {
         const issue = await client.createIssue(
             BIM360_CONTAINER_ID, title, description, status,
-            issue_type, issue_subtype, urn, sheet_guid, object_id, { x, y, z }
+            issue_type, issue_subtype, urn, sheet_guid, object_id,
+            { x: parseFloat(x), y: parseFloat(y), z: parseFloat(z) }
         );
         res.json(issue);
     } catch(err) {
