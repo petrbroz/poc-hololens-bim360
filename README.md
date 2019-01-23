@@ -24,6 +24,7 @@ and [Forge/BIM360 APIs](https://forge.autodesk.com/en/docs/bim360/v1).
 - generate a couple of AR/VR toolkit scenes for the URN ([tutorial](http://forgetoolkit.com/#/tutorial?id=step-2-set-up-a-scene))
 
 The server requires several env. variables:
+- `SERVER_URL` - URL on which this server can be accessed by other devices
 - `FORGE_CLIENT_ID` - client ID of your Forge application
 - `FORGE_CLIENT_SECRET` - client secret of your Forge application
 - `FORGE_API_HOST` - base URL for all requests to Forge; use https://developer.api.autodesk.com
@@ -45,6 +46,7 @@ If you're using Visual Studio Code, here's an example configuration you can use 
             "name": "Launch Program",
             "program": "${workspaceFolder}/index.js",
             "env": {
+                "SERVER_URL": "http://<your ip address>:3000",
                 "FORGE_CLIENT_ID": "<your client id>",
                 "FORGE_CLIENT_SECRET": "<your client secret>",
                 "REDIRECT_URL": "http://localhost:3000/api/auth/3-legged/callback",

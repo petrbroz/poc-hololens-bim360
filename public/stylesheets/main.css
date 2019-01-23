@@ -35,6 +35,12 @@ body {
     font-weight: bold;
 }
 
+#sidebar-controls > img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 #sidebar input[type=text], #sidebar select {
     width: 100%;
 }

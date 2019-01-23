@@ -51,12 +51,12 @@ function loadModel(urn) {
 
 function updateSidebarUI() {
     // Populate the sidebar UI
-    fetch('/api/auth/2-legged/token')
-        .then(resp => resp.status < 400 ? resp.json() : { access_token: '' })
-        .then(credentials => document.getElementById('token-2legs').value = credentials.access_token);
-    fetch('/api/auth/3-legged/token')
-        .then(resp => resp.status < 400 ? resp.json() : { access_token: '' })
-        .then(credentials => document.getElementById('token-3legs').value = credentials.access_token);
+    // fetch('/api/auth/2-legged/token')
+    //     .then(resp => resp.status < 400 ? resp.json() : { access_token: '' })
+    //     .then(credentials => document.getElementById('token-2legs').value = credentials.access_token);
+    // fetch('/api/auth/3-legged/token')
+    //     .then(resp => resp.status < 400 ? resp.json() : { access_token: '' })
+    //     .then(credentials => document.getElementById('token-3legs').value = credentials.access_token);
     fetch('/api/scene')
         .then(resp => resp.status < 400 ? resp.json() : [])
         .then(scenes => {

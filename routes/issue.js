@@ -8,19 +8,18 @@ const MISSING_TOKEN_WARNING = `No 3-legged token cached in server. Make sure to 
 let router = express.Router();
 
 router.use(function(req, res, next) {
-    const credentials = req.app.get('FORGE_3LEGGED_TOKEN');
+    const credentials = req.session.token;
     if (!credentials) {
         res.status(401).send(MISSING_TOKEN_WARNING);
         return;
     }
-    req.access_token = credentials.access_token;
     next();
 });
 
 // GET /api/issue/types
 // Provides list of all BIM360 issue types and subtypes.
 router.get('/types', async function(req, res, next) {
-    const client = new BIM360Client(FORGE_API_HOST, req.access_token);
+    const client = new BIM360Client(FORGE_API_HOST, req.session.token.access_token);
     try {
         const issues = await client.getIssueTypes(BIM360_CONTAINER_ID);
         res.json(issues);
@@ -32,7 +31,7 @@ router.get('/types', async function(req, res, next) {
 // GET /api/issue
 // Provides list of all BIM360 issues.
 router.get('/', async function(req, res, next) {
-    const client = new BIM360Client(FORGE_API_HOST, req.access_token);
+    const client = new BIM360Client(FORGE_API_HOST, req.session.token.access_token);
     try {
         const issues = await client.getIssues(BIM360_CONTAINER_ID);
         res.json(issues.filter(issue => issue.attributes.status !== 'void').map(issue => {
@@ -54,7 +53,7 @@ router.get('/', async function(req, res, next) {
 // POST /api/issue
 // Creates new BIM360 issue.
 router.post('/', async function(req, res, next) {
-    const client = new BIM360Client(FORGE_API_HOST, req.access_token);
+    const client = new BIM360Client(FORGE_API_HOST, req.session.token.access_token);
     const { title, description, status, issue_type, issue_subtype, object_id, x, y, z } = req.body;
     const urn = process.env.BIM360_DOCUMENT_LINEAGE_ID;
     const sheet_guid = process.env.BIM360_DOCUMENT_SHEET_GUID;
