@@ -76,7 +76,7 @@ function updateSidebarUI() {
         });
     fetch('/api/issue')
         .then(resp => resp.status < 400 ? resp.json() : [])
-        .then(issues => document.getElementById('issues').innerHTML = issues.map(issue => `<li>${issue.title}</li>`).join(''));
+        .then(issues => document.getElementById('issues').innerHTML = issues.map(issue => `<option value="${issue.id}">${issue.title}</option>`).join(''));
     fetch('/api/issue/types')
         .then(resp => resp.status < 400 ? resp.json() : [])
         .then(types => {

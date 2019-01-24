@@ -35,13 +35,15 @@
             <select id="scenes"></select>
             <hr>
             <h>Issues</h>
-            <ul id="issues"></ul>
-            Title: <input type="text" id="issue-title"></input>
-            Description: <input type="text" id="issue-description"></input>
-            Status: <input type="text" id="issue-status"></input>
-            Types: <select id="issue-types"></select>
-            Subtypes: <select id="issue-subtypes"></select>
-            <button id="issue-create">Create Issue</button>
+            <select id="issues"></select>
+            <div class="nested">
+                Title: <input type="text" id="issue-title"></input>
+                Description: <input type="text" id="issue-description"></input>
+                Status: <input type="text" id="issue-status"></input>
+                Types: <select id="issue-types"></select>
+                Subtypes: <select id="issue-subtypes"></select>
+                <button id="issue-create">Create Issue</button>
+            </div>
         </div>
     </div>
     <div id="viewer"></div>

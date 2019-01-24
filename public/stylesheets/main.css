@@ -41,6 +41,13 @@ body {
     margin-right: auto;
 }
 
+#sidebar-controls > .nested {
+    border: 1px solid lightgray;
+    margin: 1em;
+    padding: 1em;
+    font-size: smaller;
+}
+
 #sidebar input[type=text], #sidebar select {
     width: 100%;
 }
