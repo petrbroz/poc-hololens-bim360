@@ -91,6 +91,23 @@ function updateSidebarUI() {
             updateSubtypes();
         });
 
+    // Add UI for making a request to the server to create new scene
+    document.getElementById('scene-create').addEventListener('click', function() {
+        const viewer = app.getCurrentViewer();
+        const selection = viewer.getSelection();
+        const options = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: document.getElementById('scene-title').value,
+                objects: selection
+            })
+        };
+        fetch('/api/scene', options)
+            .then(resp => resp.json())
+            .then(issue => console.log(issue));
+    });
+
     // Add UI for making a request to the server to create new issue
     document.getElementById('issue-create').addEventListener('click', function() {
         const viewer = app.getCurrentViewer();

@@ -68,6 +68,111 @@ class ARVRClient {
             });
         });
     }
+
+    /**
+     * Creates new scene record.
+     * @param {string} urn Model urn.
+     * @param {string} scene Scene ID.
+     * @param {string} project BIM360 project ID.
+     * @param {number[]} list List of object IDs to be included in the scene.
+     * @returns {Promise<object>} Promise that resolves into a an object with scene info.
+     */
+    createScene(urn, scene, project, list) {
+        const options = {
+            method: 'PUT',
+            url: `${this.toolkitBaseUrl}/arkit/v1/${urn}/scenes/${scene}`,
+            headers: {
+                'Authorization': `Bearer ${this.accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                prj: {
+                    urn: urn,
+                    project_id: project
+                },
+                list: list
+            })
+        };
+        return new Promise(function(resolve, reject) {
+            request(options, function(err, resp, body) {
+                if (err) {
+                    reject(err);
+                } else if (resp.statusCode >= 400) {
+                    reject(body);
+                } else {
+                    const response = JSON.parse(body);
+                    resolve(response);
+                }
+            });
+        });
+    }
+
+    /**
+     * Starts processing of a scene so that it can be viewed by clients.
+     * @param {string} urn Model urn.
+     * @param {string} scene Scene ID.
+     */
+    processScene(urn, scene) {
+        const options = {
+            method: 'POST',
+            url: `${this.toolkitBaseUrl}/modelderivative/v2/arkit/job`,
+            headers: {
+                'Authorization': `Bearer ${this.accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                input: {
+                    urn: urn
+                },
+                output: {
+                    formats: [{
+                        type: 'arkit',
+                        scene: scene
+                    }]
+                }
+            })
+        };
+        return new Promise(function(resolve, reject) {
+            request(options, function(err, resp, body) {
+                if (err) {
+                    reject(err);
+                } else if (resp.statusCode >= 400) {
+                    reject(body);
+                } else {
+                    const response = JSON.parse(body);
+                    resolve(response);
+                }
+            });
+        });
+    }
+
+    /**
+     * Retrieves manifest of a model, including information about the status
+     * of AR/VR toolkit scenes associated with the model.
+     * @param {string} urn Model urn.
+     * @returns {Promise<object>} Promise that resolves into a an object with manifest info.
+     */
+    getManifest(urn) {
+        const options = {
+            url: `${this.toolkitBaseUrl}/modelderivative/v2/arkit/${urn}/manifest`,
+            headers: {
+                'Authorization': `Bearer ${this.accessToken}`,
+                'Content-Type': 'application/json'
+            }
+        };
+        return new Promise(function (resolve, reject) {
+            request(options, function(err, resp, body) {
+                if (err) {
+                    reject(err);
+                } else if (resp.statusCode >= 400) {
+                    reject(body);
+                } else {
+                    const response = JSON.parse(body);
+                    resolve(response);
+                }
+            });
+        });
+    }
 }
 
 module.exports = ARVRClient;
