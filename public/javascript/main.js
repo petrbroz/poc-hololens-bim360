@@ -18,14 +18,7 @@ Autodesk.Viewing.Initializer(options, async () => {
     if (response.status === 200) {
         document.querySelector('#sidebar-header > button').innerHTML = 'Logout';
         document.querySelector('#sidebar-header > button').addEventListener('click', function() { window.location.href = '/api/auth/3-legged/logout'; });
-        fetch('/api/model')
-            .then(response => response.json())
-            .then(urns => {
-                const modelsSelect = document.getElementById('models');
-                modelsSelect.innerHTML = urns.map(urn => `<option value="${urn}">${urn}</option>`).join('');
-                modelsSelect.addEventListener('change', function(ev) { loadModel(modelsSelect.value); });
-                loadModel(modelsSelect.value);
-            });
+        initializeSidebarUI();
     } else if (response.status === 404) {
         document.querySelector('#sidebar-header > button').innerHTML = 'Login';
         document.querySelector('#sidebar-header > button').addEventListener('click', function() { window.location.href = '/api/auth/3-legged/login'; });
@@ -33,50 +26,11 @@ Autodesk.Viewing.Initializer(options, async () => {
     }
 });
 
-function loadModel(urn) {
-    return new Promise(function(resolve, reject) {
-        function onDocumentLoadSuccess() {
-            const viewables = app.bubble.search({'type':'geometry'});
-            if (viewables.length > 0) {
-                app.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFailure);
-                updateSidebarUI();
-            }
-        }
-        function onDocumentLoadFailure() { reject('Could not load document'); }
-        function onItemLoadSuccess() { resolve(); }
-        function onItemLoadFailure() { reject('Could not load model'); }
-        app.loadDocument('urn:' + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
-    });
-}
+function initializeSidebarUI() {
+    // Populate dropdowns with models, scenes, and issues
+    updateModelsUI();
 
-function updateSidebarUI() {
-    // Populate the sidebar UI
-    // fetch('/api/auth/2-legged/token')
-    //     .then(resp => resp.status < 400 ? resp.json() : { access_token: '' })
-    //     .then(credentials => document.getElementById('token-2legs').value = credentials.access_token);
-    // fetch('/api/auth/3-legged/token')
-    //     .then(resp => resp.status < 400 ? resp.json() : { access_token: '' })
-    //     .then(credentials => document.getElementById('token-3legs').value = credentials.access_token);
-    fetch('/api/scene')
-        .then(resp => resp.status < 400 ? resp.json() : [])
-        .then(scenes => {
-            document.getElementById('scenes').innerHTML = scenes.map(scene => `<option value="${scene}">${scene}</option>`).join('');
-            function selectSceneGeometry() {
-                const scene = document.getElementById('scenes').value;
-                fetch('/api/scene/' + scene)
-                    .then(resp => resp.status < 400 ? resp.json() : { list: [] })
-                    .then(scene => {
-                        const viewer = app.getCurrentViewer();
-                        viewer.select(scene.list);
-                        viewer.fitToView(scene.list);
-                    });
-            }
-            document.getElementById('scenes').addEventListener('change', selectSceneGeometry);
-            selectSceneGeometry();
-        });
-    fetch('/api/issue')
-        .then(resp => resp.status < 400 ? resp.json() : [])
-        .then(issues => document.getElementById('issues').innerHTML = issues.map(issue => `<option value="${issue.id}">${issue.title}</option>`).join(''));
+    // Populate dropdowns with issue types and subtypes
     fetch('/api/issue/types')
         .then(resp => resp.status < 400 ? resp.json() : [])
         .then(types => {
@@ -129,5 +83,59 @@ function updateSidebarUI() {
         fetch('/api/issue', options)
             .then(resp => resp.json())
             .then(issue => console.log(issue));
+    });
+}
+
+async function updateModelsUI() {
+    function onModelChanged() {
+        const urn = document.getElementById('models').value;
+        updateScenesUI(urn);
+        updateIssuesUI(urn);
+        loadModel(urn);
+    }
+
+    const response = await fetch('/api/model');
+    const urns = await response.json();
+    const modelsSelect = document.getElementById('models');
+    modelsSelect.innerHTML = urns.map(urn => `<option value="${urn}">${urn}</option>`).join('');
+    modelsSelect.addEventListener('change', onModelChanged);
+    onModelChanged();
+}
+
+async function updateScenesUI(urn) {
+    async function onSceneChanged() {
+        const response = await fetch('/api/scene/' + document.getElementById('scenes').value);
+        const scene = response.status < 400 ? await response.json() : { list: [] };
+        const viewer = app.getCurrentViewer();
+        viewer.select(scene.list);
+        viewer.fitToView(scene.list);
+    }
+
+    const response = await fetch('/api/scene');
+    const scenes = response.status < 400 ? await response.json() : [];
+    const scenesSelect = document.getElementById('scenes');
+    scenesSelect.innerHTML = scenes.map(scene => `<option value="${scene}">${scene}</option>`).join('');
+    scenesSelect.addEventListener('change', onSceneChanged);
+    onSceneChanged();
+}
+
+async function updateIssuesUI(urn) {
+    const response = await fetch('/api/issue');
+    const issues = response.status < 400 ? await response.json() : [];
+    document.getElementById('issues').innerHTML = issues.map(issue => `<option value="${issue.id}">${issue.title}</option>`).join('');
+}
+
+function loadModel(urn) {
+    return new Promise(function(resolve, reject) {
+        function onDocumentLoadSuccess() {
+            const viewables = app.bubble.search({'type':'geometry'});
+            if (viewables.length > 0) {
+                app.selectItem(viewables[0].data, onItemLoadSuccess, onItemLoadFailure);
+            }
+        }
+        function onDocumentLoadFailure() { reject('Could not load document'); }
+        function onItemLoadSuccess() { resolve(); }
+        function onItemLoadFailure() { reject('Could not load model'); }
+        app.loadDocument('urn:' + urn, onDocumentLoadSuccess, onDocumentLoadFailure);
     });
 }
