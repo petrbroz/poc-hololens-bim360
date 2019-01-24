@@ -32,7 +32,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
-    res.render('index', { access_token: req.session.token });
+    const { token } = req.session;
+    res.render('index', { access_token: token ? token.access_token : null });
 });
 
 // generate QR code to a URL where the HoloLens app can obtain configuration data
@@ -47,6 +48,8 @@ app.use('/api/model', require('./routes/model'));
 app.use('/api/scene', require('./routes/scene'));
 app.use('/api/issue', require('./routes/issue'));
 app.use('/api/session', require('./routes/session'));
+
+app.use('/v2/api', require('./routes/v2/api'));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => { console.log(`Server listening on port ${port}`); });
