@@ -9,6 +9,7 @@
   "author": "Petr Broz <petr.broz@autodesk.com>",
   "license": "MIT",
   "dependencies": {
+    "ejs": "^2.6.1",
     "express": "^4.16.4",
     "express-session": "^1.15.6",
     "forge-apis": "^0.4.4",

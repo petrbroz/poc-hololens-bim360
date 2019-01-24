@@ -7,22 +7,15 @@ const options = {
 };
 
 let app = null;
+let access_token = null;
 
 Autodesk.Viewing.Initializer(options, async () => {
     app = new Autodesk.Viewing.ViewingApplication('viewer');
     app.registerViewer(app.k3D, Autodesk.Viewing.Private.GuiViewer3D);
 
-    // If the server already has a 3-legged token cached, show all the UI in the sidebar,
-    // otherwise prompt the user to sign in
-    const response = await fetch('/api/auth/3-legged/token');
-    if (response.status === 200) {
-        document.querySelector('#sidebar-header > button').innerHTML = 'Logout';
-        document.querySelector('#sidebar-header > button').addEventListener('click', function() { window.location.href = '/api/auth/3-legged/logout'; });
+    access_token = document.getElementById('access-token').value;
+    if (access_token) {
         initializeSidebarUI();
-    } else if (response.status === 404) {
-        document.querySelector('#sidebar-header > button').innerHTML = 'Login';
-        document.querySelector('#sidebar-header > button').addEventListener('click', function() { window.location.href = '/api/auth/3-legged/login'; });
-        document.getElementById('sidebar-controls').style.setProperty('display', 'none');
     }
 });
 

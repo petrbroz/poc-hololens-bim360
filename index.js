@@ -23,12 +23,17 @@ if (MISSING_ENV_VARS.length > 0) {
 }
 
 let app = express();
+app.set('view engine', 'ejs');
 
 // middleware setup
 app.use(session({ secret: 'HoloLensRocks', cookie: { maxAge: 60 * 60 * 1000 }}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', function(req, res) {
+    res.render('index', { access_token: req.session.token });
+});
 
 // generate QR code to a URL where the HoloLens app can obtain configuration data
 app.get('/code.png', function(req, res) {
