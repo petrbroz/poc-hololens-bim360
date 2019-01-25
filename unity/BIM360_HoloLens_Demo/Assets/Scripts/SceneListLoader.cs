@@ -23,7 +23,6 @@ public class SceneListLoader : MonoBehaviour {
     private ApplicationConfig _config;
 
     void Start() {
-        ProgressIndicator.Instance.Open("Loading config...");
         _config = appConfig.GetComponent<ApplicationConfig>();
         ApplicationConfig.OnConfigReady += OnConfigReady;
     }
@@ -36,9 +35,12 @@ public class SceneListLoader : MonoBehaviour {
 
     IEnumerator LoadScenes()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/scene", _config.demoServerURL)))
+        string url = string.Format("{0}/v2/api/docs/{1}/scenes", _config.demoServerURL, _config.modelID);
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
+            req.SetRequestHeader("Authorization", "Bearer " + _config.accessToken);
             yield return req.SendWebRequest();
+
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.downloadHandler.text);
@@ -56,7 +58,7 @@ public class SceneListLoader : MonoBehaviour {
                     var textMesh = clone.GetComponentInChildren<TextMesh>();
                     textMesh.text = scene;
                     var selectHandler = clone.AddComponent<SceneSelectHandler>();
-                    selectHandler.url = _config.demoServerURL;
+                    selectHandler.appConfig = _config;
                     selectHandler.target = sceneTarget;
                     selectHandler.scene = scene;
                     selectHandler.dialogPrefab = dialogPrefab;

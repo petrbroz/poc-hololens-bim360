@@ -55,9 +55,12 @@ public class ReportIssue : MonoBehaviour {
         data.AddField("z", targetTransform.localPosition.z.ToString());
         targetTransform.parent = oldParent;
 
-        using (UnityWebRequest req = UnityWebRequest.Post(string.Format("{0}/api/issue", _config.demoServerURL), data))
+        string url = string.Format("{0}/v2/api/docs/{1}/issues", _config.demoServerURL, _config.modelID);
+        using (UnityWebRequest req = UnityWebRequest.Post(url, data))
         {
+            req.SetRequestHeader("Authorization", "Bearer " + _config.accessToken);
             yield return req.SendWebRequest();
+
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.error);

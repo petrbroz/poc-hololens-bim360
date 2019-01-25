@@ -11,8 +11,6 @@ using HoloToolkit.UX.ToolTips;
 using UnityEngine.UI;
 
 public class SceneSelectHandler : MonoBehaviour {
-    [Tooltip("Demo server URL.")]
-    public string url;
     [Tooltip("Scene ID.")]
     public string scene;
     [Tooltip("Game object to be populated with the scene content.")]
@@ -23,6 +21,8 @@ public class SceneSelectHandler : MonoBehaviour {
     public GameObject issuesTarget;
     [Tooltip("Existing issue puship prefab.")]
     public GameObject issuePrefab;
+
+    public ApplicationConfig appConfig;
 
     void Start () {
         CompoundButton button = this.GetComponent<CompoundButton>();
@@ -38,8 +38,10 @@ public class SceneSelectHandler : MonoBehaviour {
 
     IEnumerator GetScene()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/scene/{1}", url, scene)))
+        string url = string.Format("{0}/v2/api/docs/{1}/scenes/{2}", appConfig.demoServerURL, appConfig.modelID, scene);
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
+            req.SetRequestHeader("Authorization", "Bearer " + appConfig.accessToken);
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)
@@ -57,7 +59,7 @@ public class SceneSelectHandler : MonoBehaviour {
                     Destroy(transform.gameObject);
                 }
                 Destroy(target.GetComponent<ForgeLoader>());
-                ForgeLoader loader = ForgeLoader.AddLoaderToGameObject(target, sceneInfo.prj.urn, scene, sceneInfo.access_token, false, true, true);
+                ForgeLoader loader = ForgeLoader.AddLoaderToGameObject(target, sceneInfo.prj.urn, scene, appConfig.accessToken, false, true, true);
                 loader.ProcessedNodes.AddListener(new UnityEngine.Events.UnityAction<float>(OnProcessingNodes));
                 loader.ProcessingNodesCompleted.AddListener(new UnityEngine.Events.UnityAction<int>(OnProcessingNodesCompleted));
             }
@@ -115,8 +117,10 @@ public class SceneSelectHandler : MonoBehaviour {
 
     IEnumerator GetIssues()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/issue", url)))
+        string url = string.Format("{0}/v2/api/docs/{1}/issues", appConfig.demoServerURL, appConfig.modelID);
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
+            req.SetRequestHeader("Authorization", "Bearer " + appConfig.accessToken);
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)
