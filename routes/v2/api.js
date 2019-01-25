@@ -51,7 +51,12 @@ router.get('/sessions/:id', function(req, res) {
     const { id } = req.params;
     req.sessionStore.get(id, function(err, session) {
         if (session) {
-            res.json({ id: id, host: SERVER_URL, access_token: session.token && session.token.access_token });
+            res.json({
+                id: id,
+                host: SERVER_URL,
+                model: BIM360_DOCUMENT_LINEAGE_ID,
+                access_token: session.token && session.token.access_token
+            });
         } else {
             res.status(404).end();
         }
