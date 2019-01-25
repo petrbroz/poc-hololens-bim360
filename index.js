@@ -33,13 +33,16 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res) {
     const { token } = req.session;
-    res.render('index', { access_token: token ? token.access_token : null });
+    res.render('index', {
+        access_token: token ? token.access_token : null,
+        session_id: req.sessionID
+    });
 });
 
 // generate QR code to a URL where the HoloLens app can obtain configuration data
 app.get('/code.png', function(req, res) {
     const { SERVER_URL } = process.env;
-    qrcode.toFileStream(res, `${SERVER_URL}/api/session/${req.session.id}`);
+    qrcode.toFileStream(res, `${SERVER_URL}/v2/api/sessions/${req.session.id}`);
 });
 
 // custom routes
