@@ -15,6 +15,24 @@ public class ApplicationConfig : MonoBehaviour {
     public void Start()
     {
         ParseConfiguration();
+#if WINDOWS_UWP
+        Debug.Log("Trying to activate QR code scanning for 30 seconds");
+        try
+        {
+            MediaFrameQrProcessing.Wrappers.ZXingQrCodeScanner.ScanFirstCameraForQrCode(
+                result =>
+                {
+                    Debug.Log("Result of QR code scanning: " + (result ?? "<none>"));
+                    //UnityEngine.WSA.Application.InvokeOnAppThread(() => { this.textMesh.text = result ?? "not found"; },  false);
+                },
+                TimeSpan.FromSeconds(30)
+            );
+        }
+        catch (Exception e)
+        {
+            Debug.Log("Error when activating QR code scanning: " + e.ToString());
+        }
+#endif
     }
 
 #if WINDOWS_UWP
