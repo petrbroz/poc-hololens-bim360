@@ -60,7 +60,7 @@ public class ReportIssue : MonoBehaviour {
         {
             req.SetRequestHeader("Authorization", "Bearer " + _config.accessToken);
             yield return req.SendWebRequest();
-
+            ProgressIndicator.Instance.Close();
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.error);
@@ -71,7 +71,6 @@ public class ReportIssue : MonoBehaviour {
                 issuePopup.SetActive(false);
                 Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Issue Submission Success", "The issue has been successfully submitted.");
             }
-            ProgressIndicator.Instance.Close();
         }
     }
 }

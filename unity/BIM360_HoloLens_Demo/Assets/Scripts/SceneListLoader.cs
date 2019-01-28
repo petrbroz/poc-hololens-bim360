@@ -29,7 +29,7 @@ public class SceneListLoader : MonoBehaviour {
 
     private void OnConfigReady()
     {
-        ProgressIndicator.Instance.SetMessage("Loading scenes...");
+        ProgressIndicator.Instance.Open("Loading scenes...");
         StartCoroutine(LoadScenes());
     }
 
@@ -40,7 +40,7 @@ public class SceneListLoader : MonoBehaviour {
         {
             req.SetRequestHeader("Authorization", "Bearer " + _config.accessToken);
             yield return req.SendWebRequest();
-
+            ProgressIndicator.Instance.Close();
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.downloadHandler.text);
@@ -48,8 +48,6 @@ public class SceneListLoader : MonoBehaviour {
             }
             else
             {
-                ProgressIndicator.Instance.SetMessage("Parsing scenes...");
-
                 string json = "{ \"scenes\": " + req.downloadHandler.text + " }";
                 SceneResult result = JsonUtility.FromJson<SceneResult>(json);
                 foreach (var scene in result.scenes)
@@ -68,7 +66,6 @@ public class SceneListLoader : MonoBehaviour {
                 GetComponent<ObjectCollection>().UpdateCollection();
 
             }
-            ProgressIndicator.Instance.Close();
         }
     }
 

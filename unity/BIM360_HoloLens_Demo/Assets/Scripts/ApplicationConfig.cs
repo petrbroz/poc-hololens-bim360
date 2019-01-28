@@ -55,9 +55,11 @@ public class ApplicationConfig : MonoBehaviour {
 
     IEnumerator ParseConfigurationFromURL(string url)
     {
+        ProgressIndicator.Instance.SetMessage("Loading application configuration...");
         using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
             yield return req.SendWebRequest();
+            ProgressIndicator.Instance.Close();
             if (req.isNetworkError || req.isHttpError)
             {
                 Debug.LogError(req.downloadHandler.text);
