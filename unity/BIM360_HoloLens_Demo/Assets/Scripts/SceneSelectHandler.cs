@@ -146,6 +146,7 @@ public class SceneSelectHandler : MonoBehaviour {
                     clone.transform.localScale = new Vector3(5f, 5f, 5f);
                     clone.transform.localRotation = Quaternion.Euler(90f, 0f, 0f);
                     clone.GetComponentInChildren<Text>().text = issue.title;
+                    clone.GetComponent<LookAtSolver>().target = Camera.main.transform;
                     //Debug.Log("Issue: " + issue.title);
                 }
             }
