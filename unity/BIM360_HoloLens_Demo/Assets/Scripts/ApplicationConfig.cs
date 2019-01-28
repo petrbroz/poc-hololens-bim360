@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using HoloToolkit.UX.Progress;
+using HoloToolkit.Unity;
 
 #if WINDOWS_UWP
 using System;
@@ -26,6 +27,8 @@ public class ApplicationConfig : MonoBehaviour {
         // On UWP platform, try and scan for QR code for 60 seconds.
         // If a QR code is found, make a request to its encoded URL
         // to see if it contains configuration JSON.
+        TextToSpeech textToSpeech = GetComponent<TextToSpeech>();
+        textToSpeech.StartSpeaking("Please scan a QR code with your session configuration.");
         ProgressIndicator.Instance.Open("Scanning for QR code with configuration URL...");
         Debug.Log("Activating QR code scanning for 60 seconds");
         try
