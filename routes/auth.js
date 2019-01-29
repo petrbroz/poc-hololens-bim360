@@ -29,7 +29,7 @@ router.get('/3-legged/login', function(req, res, next) {
 // GET /api/auth/3-legged/logout
 // Clears the in-memory cache of the 3-legged auth token.
 router.get('/3-legged/logout', function(req, res, next) {
-    req.app.set('FORGE_3LEGGED_TOKEN', null);
+    req.session.token = null;
     res.redirect('/');
 });
 
@@ -38,7 +38,7 @@ router.get('/3-legged/logout', function(req, res, next) {
 router.get('/3-legged/callback', async function(req, res, next) {
     try {
         const credentials = await threeLeggedAuth.getToken(req.query.code);
-        req.app.set('FORGE_3LEGGED_TOKEN', credentials);
+        req.session.token = credentials;
         res.redirect('/');
     } catch(err) {
         next(err);
@@ -48,7 +48,7 @@ router.get('/3-legged/callback', async function(req, res, next) {
 // GET /api/auth/3-legged/token
 // Returns cached 3-legged auth token if there's one, otherwise 404.
 router.get('/3-legged/token', function(req, res, next) {
-    const credentials = req.app.get('FORGE_3LEGGED_TOKEN');
+    const credentials = req.session.token;
     if (credentials) {
         res.json(credentials);
     } else {

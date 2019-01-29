@@ -1,8 +1,14 @@
+@font-face {
+    font-family: 'Artifakt';
+    src: url('/fonts/Artifakt_Element_Regular.woff2') format('woff2');
+}
+
 body {
     margin: 0;
     padding: 0;
     width: 100vw;
     height: 100vh;
+    font-family: 'Artifakt', sans-serif;
 }
 
 #sidebar {
@@ -14,8 +20,33 @@ body {
     box-sizing: border-box;
 }
 
-#sidebar img.logo {
+#sidebar-header {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#sidebar-header img {
     width: 150px;
+}
+
+#sidebar-controls > h {
+    font-weight: bold;
+}
+
+#sidebar-controls img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+}
+
+#sidebar-controls > .nested {
+    border: 1px solid lightgray;
+    margin: 1em;
+    padding: 1em;
+    font-size: smaller;
 }
 
 #sidebar input[type=text], #sidebar select {

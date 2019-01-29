@@ -49,7 +49,7 @@ class BIM360Client {
      */
     getIssues(containerId) {
         const options = {
-            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues`,
+            url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues?page[limit]=100`,
             headers: {
                 'Authorization': `Bearer ${this.accessToken}`,
                 'Content-Type': 'application/vnd.api+json'
@@ -77,9 +77,13 @@ class BIM360Client {
      * @param {string} status Issue status.
      * @param {string} issueType Issue type ID, one of the IDs returned by {@see getIssueTypes}.
      * @param {string} issueSubtype Issue subtype ID, one of the nested IDs returned by {@see getIssueTypes}.
+     * @param {string} urn Document (lineage) urn to be associated with the issue.
+     * @param {string} sheet_guid GUID of specific sheet associated with the issue.
+     * @param {string} object_id ID of scene element associated with the issue.
+     * @param {object} location Pushpin location. Expected object with properties 'x', 'y', and 'z'.
      * @returns {Promise<object>} Promise that resolves into a an object describing the new issue.
      */
-    createIssue(containerId, title, description, status, issueType, issueSubtype) {
+    createIssue(containerId, title, description, status, issueType, issueSubtype, urn, sheet_guid, object_id, location) {
         const options = {
             url: `${this.forgeBaseUrl}/issues/v1/containers/${containerId}/quality-issues`,
             method: 'POST',
@@ -93,16 +97,21 @@ class BIM360Client {
                     attributes: {
                         title: title,
                         description: description,
-                        //due_date: '2019-08-31T11:30:51.000Z',
                         status: status,
-                        //"assigned_to": "W8WMNXPNCDPL",
-                        //"assigned_to_type": "user",
-                        //"owner": "W8WMNXPNCDPL",
                         ng_issue_subtype_id: issueSubtype,
                         ng_issue_type_id: issueType,
-                        //"root_cause_id": "a51e89ad-119b-41bc-b74a-56fe66406492",
-                        //"starting_version": "1",
-                        //"location_description": "Kitchen"
+                        target_urn: urn,
+                        pushpin_attributes: {
+                            type: 'TwoDVectorPushpin',
+                            location: location,
+                            object_id: object_id
+                        },
+                        starting_version: '1',
+                        sheet_metadata: {
+                            is3D: true,
+                            sheetGuid: sheet_guid,
+                            sheetName: '{3D}'
+                        }
                     }
                 }
             })

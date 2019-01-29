@@ -4,7 +4,7 @@
 using System.Collections;
 using UnityEngine;
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
 using System.Text;
 using UnityEngine.Windows.Speech;
 #endif
@@ -17,7 +17,7 @@ namespace HoloToolkit.Unity.InputModule
     /// </summary>
     public class DictationInputManager : Singleton<DictationInputManager>, IInputSource
     {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
         /// <summary>
         /// Caches the text currently being displayed in dictation display text.
         /// </summary>
@@ -58,7 +58,7 @@ namespace HoloToolkit.Unity.InputModule
 
         #region Unity Methods
 
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
         protected override void Awake()
         {
             base.Awake();
@@ -112,7 +112,7 @@ namespace HoloToolkit.Unity.InputModule
         /// <returns></returns>
         public static IEnumerator StartRecording(GameObject listener = null, float initialSilenceTimeout = 5f, float autoSilenceTimeout = 20f, int recordingTime = 10)
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
             if (IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to start recording");
@@ -176,7 +176,7 @@ namespace HoloToolkit.Unity.InputModule
         /// </summary>
         private IEnumerator StopRecordingInternal()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
             if (!IsListening || isTransitioning)
             {
                 Debug.LogWarning("Unable to stop recording");
@@ -207,7 +207,7 @@ namespace HoloToolkit.Unity.InputModule
 
         private IEnumerator FinishStopRecording()
         {
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
             while (dictationRecognizer.Status == SpeechSystemStatus.Running)
             {
                 yield return null;
@@ -221,7 +221,7 @@ namespace HoloToolkit.Unity.InputModule
         }
 
         #region Dictation Recognizer Callbacks
-#if UNITY_WSA || UNITY_STANDALONE_WIN
+#if WINDOWS_UWP
 
         /// <summary>
         /// This event is fired while the user is talking. As the recognizer listens, it provides text of what it's heard so far.

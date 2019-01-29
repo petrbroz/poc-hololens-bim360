@@ -1,27 +1,50 @@
 ﻿using HoloToolkit.Unity.Collections;
+using HoloToolkit.UX.Dialog;
+using HoloToolkit.UX.Progress;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
 public class SceneListLoader : MonoBehaviour {
-    public string url; // Base URL for getting the list of all AR/VR toolkit scenes as well as individual scene info
-    public GameObject buttonPrefab; // Button prefab for each scene
-    public GameObject targetObject; // Game object to place scene geometry into
+    [Tooltip("Game object storing the application config.")]
+    public GameObject appConfig;
+    [Tooltip("Button prefab for each scene.")]
+    public GameObject buttonPrefab;
+    [Tooltip("Game object to place scene geometry into.")]
+    public GameObject sceneTarget;
+    [Tooltip("Game object to place issue pushpins into.")]
+    public GameObject issueTarget;
+    [Tooltip("Error dialog prefab.")]
+    public GameObject dialogPrefab;
+    [Tooltip("Issue tooltip prefab.")]
+    public GameObject issuePrefab;
 
-    // Use this for initialization
-    void Start () {
+    private ApplicationConfig _config;
+
+    void Start() {
+        _config = appConfig.GetComponent<ApplicationConfig>();
+        ApplicationConfig.OnConfigReady += OnConfigReady;
+    }
+
+    private void OnConfigReady()
+    {
         StartCoroutine(LoadScenes());
     }
 
     IEnumerator LoadScenes()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(string.Format("{0}/api/scene", url)))
+        ProgressIndicator.Instance.SetMessage("Loading scenes...");
+        string url = string.Format("{0}/v2/api/docs/{1}/scenes", _config.demoServerURL, _config.modelID);
+        using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
+            req.SetRequestHeader("Authorization", "Bearer " + _config.accessToken);
             yield return req.SendWebRequest();
+            ProgressIndicator.Instance.Close();
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.LogError(req.error);
+                Debug.LogError(req.downloadHandler.text);
+                Dialog.Open(dialogPrefab.gameObject, DialogButtonType.OK, "Scenes List Loading Error", req.downloadHandler.text);
             }
             else
             {
@@ -33,11 +56,15 @@ public class SceneListLoader : MonoBehaviour {
                     var textMesh = clone.GetComponentInChildren<TextMesh>();
                     textMesh.text = scene;
                     var selectHandler = clone.AddComponent<SceneSelectHandler>();
-                    selectHandler.url = url;
-                    selectHandler.target = targetObject;
+                    selectHandler.appConfig = _config;
+                    selectHandler.target = sceneTarget;
                     selectHandler.scene = scene;
+                    selectHandler.dialogPrefab = dialogPrefab;
+                    selectHandler.issuesTarget = issueTarget;
+                    selectHandler.issuePrefab = issuePrefab;
                 }
                 GetComponent<ObjectCollection>().UpdateCollection();
+
             }
         }
     }
