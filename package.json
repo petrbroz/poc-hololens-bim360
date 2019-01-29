@@ -1,6 +1,6 @@
 {
   "name": "poc-hololens-bim360",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Prototype application integrating BIM360 with HoloLens.",
   "main": "index.js",
   "scripts": {
