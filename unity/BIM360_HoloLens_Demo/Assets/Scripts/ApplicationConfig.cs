@@ -23,13 +23,15 @@ public class ApplicationConfig : MonoBehaviour {
 
     public void Start()
     {
+        ProgressIndicator.Instance.Open("Loading application config...");
+
 #if WINDOWS_UWP
         // On UWP platform, try and scan for QR code for 60 seconds.
         // If a QR code is found, make a request to its encoded URL
         // to see if it contains configuration JSON.
         TextToSpeech textToSpeech = GetComponent<TextToSpeech>();
         textToSpeech.StartSpeaking("Please scan a QR code with your session configuration.");
-        ProgressIndicator.Instance.Open("Scanning for QR code with configuration URL...");
+        ProgressIndicator.Instance.SetMessage("Scanning for QR code with configuration URL...");
         Debug.Log("Activating QR code scanning for 60 seconds");
         try
         {
@@ -44,6 +46,7 @@ public class ApplicationConfig : MonoBehaviour {
         }
         catch (Exception e)
         {
+            ProgressIndicator.Instance.Close();
             Debug.Log("Error when activating QR code scanning: " + e.ToString());
         }
 #else
@@ -59,9 +62,9 @@ public class ApplicationConfig : MonoBehaviour {
         using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
             yield return req.SendWebRequest();
-            ProgressIndicator.Instance.Close();
             if (req.isNetworkError || req.isHttpError)
             {
+                ProgressIndicator.Instance.Close();
                 Debug.LogError(req.downloadHandler.text);
             }
             else

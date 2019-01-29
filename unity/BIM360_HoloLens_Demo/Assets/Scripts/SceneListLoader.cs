@@ -29,12 +29,12 @@ public class SceneListLoader : MonoBehaviour {
 
     private void OnConfigReady()
     {
-        ProgressIndicator.Instance.Open("Loading scenes...");
         StartCoroutine(LoadScenes());
     }
 
     IEnumerator LoadScenes()
     {
+        ProgressIndicator.Instance.SetMessage("Loading scenes...");
         string url = string.Format("{0}/v2/api/docs/{1}/scenes", _config.demoServerURL, _config.modelID);
         using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
