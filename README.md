@@ -4,6 +4,8 @@ Sample application showing how to view and manipulate BIM 360 content from a Hol
 using [AR/VR Toolkit](http://forgetoolkit.com), [Mixed Reality Toolkit](https://github.com/Microsoft/MixedRealityToolkit-Unity),
 and [Forge/BIM360 APIs](https://forge.autodesk.com/en/docs/bim360/v1).
 
+[![Demo](https://img.youtube.com/vi/h5YwP8nADn0/0.jpg)](https://www.youtube.com/watch?v=h5YwP8nADn0)
+
 ## Development
 
 ### Prerequisites
@@ -55,7 +57,7 @@ If you're using Visual Studio Code, here's an example configuration you can use 
                 "BIM360_CONTAINER_ID": "<your BIM360 issue container id>",
                 "BIM360_DOCUMENT_LINEAGE_ID": "<your BIM360 document lineage ID, without base64-encoding>",
                 "BIM360_DOCUMENT_VERSION_URN": "<your BIM360 document version URN, base64-encoded>",
-                "BIM360_DOCUMENT_SHEET_GUID": "<your BIM360 document sheet GUID"
+                "BIM360_DOCUMENT_SHEET_GUID": "<your BIM360 document sheet GUID>"
             }
         }
     ]
